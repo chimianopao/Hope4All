@@ -63,12 +63,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if(currentAccessToken == null){
-                    //ainda nao logou
-                    Toast.makeText(LoginActivity.this, "token null", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "token null", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    // ja logou
-                    Toast.makeText(LoginActivity.this, "token existe", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "token existe", Toast.LENGTH_SHORT).show();
                 }
             }
         };
