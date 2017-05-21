@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "785708212358",
+    "firebase_url": "https://hope4all-b6e5f.firebaseio.com",
+    "project_id": "hope4all-b6e5f",
+    "storage_bucket": "hope4all-b6e5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785708212358:android:f06827e1c5c17a82",
+        "android_client_info": {
+          "package_name": "com.example.leona.hope4all"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785708212358-o8pj141bl6qjbqufhm9n3tuctqseu97q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDykjA5w3HgJwFtMQ7mmvtQSPB-yqDkrfM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
