@@ -20,7 +20,7 @@ public class Dialogs {
         loadingDialog.dismiss();
     }
 
-    public static void dialogErro(Activity tela, String texto) {
+    public static void dialogErro(final Activity tela, String texto) {
         new AlertDialog.Builder(tela)
         .setTitle("Erro")
         .setMessage(texto)

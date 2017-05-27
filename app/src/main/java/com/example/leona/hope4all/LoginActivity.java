@@ -2,9 +2,14 @@ package com.example.leona.hope4all;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -13,7 +18,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -23,37 +27,53 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    private LoginButton button;
+    private LoginButton loginButton;
     private AccessToken accessToken;
     private AccessTokenTracker accessTokenTracker;
     private String nome, email, aniversario, genero;
+    private EditText editEmail, editSenha;
+    private Button buttEntrar, buttCadastro;
+    private RadioGroup radioGroup;
+    private RadioButton radioCidadao, radioEntidade;
+    private TextInputLayout layoutEmail, layoutSenha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
-        button = (LoginButton) findViewById(R.id.login_button);
-        button.setReadPermissions("public_profile", "email", "user_birthday");
+        instanciaComponentes();
+        loginButton.setReadPermissions("public_profile", "email", "user_birthday");
         accessToken = AccessToken.getCurrentAccessToken();
         setEventos();
+    }
+
+    private void instanciaComponentes() {
+        editEmail = (EditText) findViewById(R.id.editEmail);
+        editSenha = (EditText) findViewById(R.id.editSenha);
+        buttCadastro = (Button) findViewById(R.id.buttCadastrar);
+        buttEntrar = (Button) findViewById(R.id.buttEntrar);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        radioCidadao = (RadioButton) findViewById(R.id.radioCidadao);
+        radioEntidade = (RadioButton) findViewById(R.id.radioentidade);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        layoutEmail = (TextInputLayout) findViewById(R.id.layoutEmail);
+        layoutSenha = (TextInputLayout) findViewById(R.id.layoutSenha);
     }
 
     private void setEventos() {
         if(accessToken != null){
             buscaInfoFacebook(accessToken);
         }
-        button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 buscaInfoFacebook(loginResult.getAccessToken());
             }
-
             @Override
             public void onCancel() {
 
             }
-
             @Override
             public void onError(FacebookException error) {
 
@@ -70,6 +90,37 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
+        buttCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, CadastroEntidadeActivity.class));
+            }
+        });
+        buttEntrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EntidadeController.getInstance().fazerLogin(LoginActivity.this, editEmail.getText().toString(), editSenha.getText().toString());
+            }
+        });
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                if(radioCidadao.isChecked()){
+                    layoutEmail.setVisibility(View.GONE);
+                    layoutSenha.setVisibility(View.GONE);
+                    buttEntrar.setVisibility(View.GONE);
+                    buttCadastro.setVisibility(View.GONE);
+                    loginButton.setVisibility(View.VISIBLE);
+                }
+                else{
+                    layoutEmail.setVisibility(View.VISIBLE);
+                    layoutSenha.setVisibility(View.VISIBLE);
+                    buttEntrar.setVisibility(View.VISIBLE);
+                    buttCadastro.setVisibility(View.VISIBLE);
+                    loginButton.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void buscaInfoFacebook(AccessToken token){

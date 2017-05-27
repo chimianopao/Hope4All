@@ -29,7 +29,8 @@
         <activity
             android:name=".TelaPrincipalActivity"
             android:label="@string/title_activity_tela_principal"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CadastroEntidadeActivity"></activity>
     </application>
 
 </manifest>
