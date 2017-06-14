@@ -17,6 +17,10 @@ public class UsuarioController {
         return instance;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     public void terminouLogin(Usuario user, Activity tela){
         usuario = user;
         Dialogs.tiraDialogCarregando();

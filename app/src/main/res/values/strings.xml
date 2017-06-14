@@ -3,4 +3,11 @@
     <string name="facebook_app_id">1484093944944398</string>
     <string name="title_activity_complementar_login">ComplementarLoginActivity</string>
     <string name="title_activity_tela_principal">TelaPrincipalActivity</string>
+    <string-array name="categorias">
+        <item>Alimentos</item>
+        <item>Agasalhos</item>
+        <item>Livros</item>
+        <item>Brinquedos</item>
+        <item>Remédios</item>
+    </string-array>
 </resources>

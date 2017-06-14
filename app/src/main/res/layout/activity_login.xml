@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.leona.hope4all.LoginActivity"
     android:orientation="vertical"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:background="#FFF">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hope4all"
+        android:layout_gravity="center"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/layoutEmail"
@@ -44,7 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Entrar"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:backgroundTint="#04D"/>
 
     <Button
         android:id="@+id/buttCadastrar"
@@ -52,18 +60,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Cadastrar"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:backgroundTint="#04D"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"/>
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp">
 
         <RadioButton
             android:id="@+id/radioCidadao"

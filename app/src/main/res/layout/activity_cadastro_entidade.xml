@@ -23,6 +23,20 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:focusable="false">
+        <EditText
+            android:id="@+id/editArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite a área de atuação da entidade"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_width="match_parent"
@@ -97,7 +111,7 @@
             android:id="@+id/editSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Digite sua senha da entidade"
+            android:hint="Digite sua senha"
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -106,6 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Confirmar"/>
+        android:text="Confirmar"
+        android:backgroundTint="#04D"/>
 
 </LinearLayout>

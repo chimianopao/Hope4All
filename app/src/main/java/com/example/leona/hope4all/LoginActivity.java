@@ -111,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                     buttEntrar.setVisibility(View.GONE);
                     buttCadastro.setVisibility(View.GONE);
                     loginButton.setVisibility(View.VISIBLE);
+                    if(accessToken != null)
+                        startActivity(new Intent(LoginActivity.this, TelaPrincipalActivity.class));
                 }
                 else{
                     layoutEmail.setVisibility(View.VISIBLE);

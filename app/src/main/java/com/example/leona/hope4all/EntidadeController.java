@@ -1,6 +1,7 @@
 package com.example.leona.hope4all;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
@@ -9,6 +10,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 /**
  * Created by leona on 27/05/2017.
  */
@@ -16,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class EntidadeController {
 
     private static EntidadeController instance;
-    private static Entidade entidade;
+    private Entidade entidade;
     private FirebaseAuth firebaseAuth;
 
     public EntidadeController(){
@@ -50,5 +53,23 @@ public class EntidadeController {
                 tela.startActivity(new Intent(tela, TelaPrincipalActivity.class));
             }
         });
+    }
+
+    public void buscaEntidades(Activity tela, ArrayList<Entidade> listaEntidades) {
+        Dialogs.dialogCarregando(tela);
+        EntidadeDB.getInstance().getEntidades(tela, listaEntidades);
+    }
+
+    public void terminouBusca(Activity tela) {
+        Dialogs.tiraDialogCarregando();
+        ((TelaPrincipalActivity)tela).populaLista();
+    }
+
+    public void setEntidadeDoacao(Entidade entidadeDoacao) {
+        entidade = entidadeDoacao;
+    }
+
+    public Entidade getEntidade(){
+        return entidade;
     }
 }
