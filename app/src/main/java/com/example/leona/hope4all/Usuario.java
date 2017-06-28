@@ -15,6 +15,7 @@ public class Usuario implements Serializable{
     private String genero;
     private String email;
     private String telefone;
+    private int pontos;
 
     public Usuario(){}
 
@@ -35,6 +36,14 @@ public class Usuario implements Serializable{
         this.aniversario = aniversario;
         this.genero = genero;
         this.email = email;
+    }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
     }
 
     public String getNome() {

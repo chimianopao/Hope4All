@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /**
  * Created by leona on 20/05/2017.
  */
@@ -62,5 +64,29 @@ public class UsuarioDB {
                 UsuarioController.getInstance().terminouLogin(user, tela);
             }
         });
+    }
+
+    public void getUsuarios(final Activity tela, final ArrayList<Usuario> listaRanking){
+        databaseReference.child("usuarios")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot == null){
+                            Dialogs.tiraDialogCarregando();
+                            return;
+                        }
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            Usuario user = new Usuario(child);
+                            listaRanking.add(user);
+                        }
+                        DoacaoDB.getInstance().calculaPontos(tela, listaRanking);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

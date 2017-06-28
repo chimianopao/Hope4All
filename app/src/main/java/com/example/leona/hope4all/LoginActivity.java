@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editEmail, editSenha;
     private Button buttEntrar, buttCadastro;
     private RadioGroup radioGroup;
-    private RadioButton radioCidadao, radioEntidade;
+    private RadioButton radioCidadao;
     private TextInputLayout layoutEmail, layoutSenha;
 
     @Override
@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setReadPermissions("public_profile", "email", "user_birthday");
         accessToken = AccessToken.getCurrentAccessToken();
         setEventos();
+        setTitle("Login");
     }
 
     private void instanciaComponentes() {
@@ -55,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
         buttEntrar = (Button) findViewById(R.id.buttEntrar);
         loginButton = (LoginButton) findViewById(R.id.login_button);
         radioCidadao = (RadioButton) findViewById(R.id.radioCidadao);
-        radioEntidade = (RadioButton) findViewById(R.id.radioentidade);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         layoutEmail = (TextInputLayout) findViewById(R.id.layoutEmail);
         layoutSenha = (TextInputLayout) findViewById(R.id.layoutSenha);

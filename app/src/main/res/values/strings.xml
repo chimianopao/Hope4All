@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Hope4All</string>
+    <string name="app_name">Hope 4 All</string>
     <string name="facebook_app_id">1484093944944398</string>
-    <string name="title_activity_complementar_login">ComplementarLoginActivity</string>
-    <string name="title_activity_tela_principal">TelaPrincipalActivity</string>
+    <string name="title_activity_complementar_login">Complementar Login</string>
+    <string name="title_activity_tela_principal">Tela Principal</string>
     <string-array name="categorias">
         <item>Alimentos</item>
         <item>Agasalhos</item>
