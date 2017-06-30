@@ -67,7 +67,8 @@ public class UsuarioDB {
     }
 
     public void getUsuarios(final Activity tela, final ArrayList<Usuario> listaRanking){
-        databaseReference.child("usuarios")
+        databaseReference
+                .child("usuarios")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -81,6 +82,32 @@ public class UsuarioDB {
                             listaRanking.add(user);
                         }
                         DoacaoDB.getInstance().calculaPontos(tela, listaRanking);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void loginAdm(final Activity tela, String email, String senha) {
+        databaseReference
+                .child("administradores")
+                .orderByChild("email")
+                .equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot == null){
+                            Dialogs.dialogErro(tela, "Este e-mail não está cadastrado!");
+                            return;
+                        }
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            Administrador adm = new Administrador(child);
+                            UsuarioController.getInstance().terminouLoginAdm(tela, adm);
+                        }
                     }
 
                     @Override

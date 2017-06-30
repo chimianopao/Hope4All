@@ -20,6 +20,10 @@ import java.util.ArrayList;
 
 public class TelaPrincipalActivity extends AppCompatActivity {
 
+    public static final int ORIGEM_USUARIO = 1;
+    public static final int ORIGEM_ADM = 2;
+    public static final int ORIGEM_ENTIDADE = 3;
+    public static int ORIGEM;
     private ArrayList<Entidade> listaEntidades;
     private ArrayList<Usuario> listaDoadores;
     private SearchView searchBar;
@@ -49,8 +53,11 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EntidadeController.getInstance().setEntidadeDoacao(listaEntidades.get(position));
-                startActivity(new Intent(TelaPrincipalActivity.this, TelaDoacaoActivity.class));
+                EntidadeController.getInstance().setEntidade(listaEntidades.get(position));
+                if(ORIGEM == ORIGEM_ADM)
+                    startActivity(new Intent(TelaPrincipalActivity.this, TelaAnaliseCadastro.class));
+                else
+                    startActivity(new Intent(TelaPrincipalActivity.this, TelaDoacaoActivity.class));
             }
         });
         EntidadeController.getInstance().buscaEntidades(this, listaEntidades);
@@ -77,33 +84,76 @@ public class TelaPrincipalActivity extends AppCompatActivity {
             }
         });
 
-        listViewRanking = (ListView) findViewById(R.id.listView2);
-        listaDoadores = new ArrayList<>();
+        if(ORIGEM == ORIGEM_USUARIO) {
+            listViewRanking = (ListView) findViewById(R.id.listView2);
+            listaDoadores = new ArrayList<>();
+        }
+        else
+            findViewById(R.id.floating).setVisibility(View.GONE);
     }
 
     private void inicializaTabHost() {
         TabHost host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
 
-        TabHost.TabSpec spec3 = host.newTabSpec("Ranking");
-        spec3.setContent(R.id.tab3);
-        spec3.setIndicator("Ranking");
+        String tab1 = null;
+        String tab2 = null;
+        String tab3 = null;
+        int id1 = 0;
+        int id2 = 0;
+        int id3 = 0;
+
+        if(ORIGEM == ORIGEM_USUARIO){
+            tab1 = "Ranking";
+            tab2 = "Entidades";
+            tab3 = "Mapa";
+            id1 = R.id.tab3;
+            id2 = R.id.tab1;
+            id3 = R.id.tab2;
+        }
+        else if(ORIGEM == ORIGEM_ADM){
+            tab1 = "Análise de Cadastros";
+            tab2 = "Pontos de Coleta";
+            tab3 = "Campanhas de Doação";
+            id1 = R.id.tab1;
+            id2 = R.id.tab2;
+            id3 = R.id.tab3;
+        }
+        else{
+            tab1 = "Ranking";
+            tab2 = "Entidades";
+            tab3 = "Mapa";
+            id1 = R.id.tab3;
+            id2 = R.id.tab1;
+            id3 = R.id.tab2;
+        }
+
+        TabHost.TabSpec spec3 = host.newTabSpec(tab1);
+        spec3.setContent(id1);
+        spec3.setIndicator(tab1);
         host.addTab(spec3);
 
-        TabHost.TabSpec spec = host.newTabSpec("Lista");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Entidades");
+        TabHost.TabSpec spec = host.newTabSpec(tab2);
+        spec.setContent(id2);
+        spec.setIndicator(tab2);
         host.addTab(spec);
 
-        TabHost.TabSpec spec2 = host.newTabSpec("Mapa");
-        spec2.setContent(R.id.tab2);
-        spec2.setIndicator("Mapa");
+        TabHost.TabSpec spec2 = host.newTabSpec(tab3);
+        spec2.setContent(id3);
+        spec2.setIndicator(tab3);
         host.addTab(spec2);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     public void populaLista(){
         listView.setAdapter(new EntidadeAdapter(this, listaEntidades));
-        RankingController.getInstance().carregaRanking(this, listaDoadores);
+        if(ORIGEM == ORIGEM_USUARIO)
+            RankingController.getInstance().carregaRanking(this, listaDoadores);
     }
 
     public void populaListaRanking(ArrayList<Usuario> listaRanking) {

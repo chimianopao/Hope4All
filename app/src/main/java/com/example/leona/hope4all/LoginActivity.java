@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton radioCidadao;
     private TextInputLayout layoutEmail, layoutSenha;
+    private RadioButton radioAdm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         layoutEmail = (TextInputLayout) findViewById(R.id.layoutEmail);
         layoutSenha = (TextInputLayout) findViewById(R.id.layoutSenha);
+        radioAdm = (RadioButton) findViewById(R.id.radioAdm);
     }
 
     private void setEventos() {
@@ -99,7 +101,10 @@ public class LoginActivity extends AppCompatActivity {
         buttEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EntidadeController.getInstance().fazerLogin(LoginActivity.this, editEmail.getText().toString(), editSenha.getText().toString());
+                if(radioAdm.isChecked())
+                    UsuarioController.getInstance().loginAdm(LoginActivity.this, editEmail.getText().toString(), editSenha.getText().toString());
+                else
+                    EntidadeController.getInstance().fazerLogin(LoginActivity.this, editEmail.getText().toString(), editSenha.getText().toString());
             }
         });
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

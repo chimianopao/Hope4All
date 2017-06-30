@@ -73,9 +73,73 @@ public class EntidadeDB {
                         }
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            listaEntidades.add(new Entidade(child));
+                            if(TelaPrincipalActivity.ORIGEM == TelaPrincipalActivity.ORIGEM_ADM){
+                                boolean aprovada = (boolean) child.child("aprovada").getValue();
+                                if(!aprovada)
+                                    listaEntidades.add(new Entidade(child));
+                            }
+                            else
+                                listaEntidades.add(new Entidade(child));
                         }
                         EntidadeController.getInstance().terminouBusca(tela);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void verificaCadastro(final Activity tela, final String email, final String senha) {
+        databaseReference.child("entidades")
+                .orderByChild("email")
+                .equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() == null){
+                            Dialogs.tiraDialogCarregando();
+                            return;
+                        }
+                        for(DataSnapshot child : dataSnapshot.getChildren()) {
+                            boolean aprovado = (boolean) child.child("aprovada").getValue();
+                            if(aprovado)
+                                EntidadeController.getInstance().loginSucesso(tela, email, senha);
+                            else
+                                EntidadeController.getInstance().cadastroNaoAprovado(tela);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void aprovaEntidade(final Activity tela, String email) {
+        databaseReference
+                .child("entidades")
+                .orderByChild("email")
+                .equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot child : dataSnapshot.getChildren()){
+                            String key = child.getKey();
+                            databaseReference
+                                    .child("entidades")
+                                    .child(key)
+                                    .child("aprovada")
+                                    .setValue(true)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            EntidadeController.getInstance().terminouAprovacao(tela);
+                                        }
+                                    });
+                        }
                     }
 
                     @Override
