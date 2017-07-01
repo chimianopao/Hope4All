@@ -49,7 +49,10 @@ public class EntidadeController {
 
     public void terminouBusca(Activity tela) {
         Dialogs.tiraDialogCarregando();
-        ((TelaPrincipalActivity)tela).populaLista();
+        if(tela instanceof TelaPrincipalActivity)
+            ((TelaPrincipalActivity)tela).populaLista();
+        else
+            ((TelaListaEntidadesAnalise)tela).populaLista();
     }
 
     public void setEntidade(Entidade entidadeDoacao) {

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TabHost;
@@ -28,36 +29,56 @@ public class TelaPrincipalActivity extends AppCompatActivity {
     private ArrayList<Usuario> listaDoadores;
     private SearchView searchBar;
     private ListView listView, listViewRanking;
+    private ArrayList<CheckBox> listaCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tela_principal);
+        if(ORIGEM == ORIGEM_USUARIO) {
+            setContentView(R.layout.activity_tela_principal);
+            inicializaTabHostUsuario();
+            inicializaListasUsuario();
+        }
+        else if(ORIGEM == ORIGEM_ADM) {
+            setContentView(R.layout.layout_principal_adm);
+            inicializaComponentes();
+        }
+        else {
+            setContentView(R.layout.activity_tela_principal);
+            inicializaTabHostEntidade();
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        inicializaTabHost();
-        inicializaListas();
+    }
 
-        findViewById(R.id.floating).setOnClickListener(new View.OnClickListener() {
+    private void inicializaComponentes() {
+        findViewById(R.id.buttAnalise).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listaDoadores = new ArrayList<>();
-                RankingController.getInstance().carregaRanking(TelaPrincipalActivity.this, listaDoadores);
+                startActivity(new Intent(TelaPrincipalActivity.this, TelaListaEntidadesAnalise.class));
+            }
+        });
+
+        findViewById(R.id.buttCadastroPonto).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TelaPrincipalActivity.this, CadastroPontoColeta.class));
             }
         });
     }
 
-    private void inicializaListas() {
+    private void inicializaTabHostEntidade() {
+
+    }
+
+    private void inicializaListasUsuario() {
         listaEntidades = new ArrayList<>();
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 EntidadeController.getInstance().setEntidade(listaEntidades.get(position));
-                if(ORIGEM == ORIGEM_ADM)
-                    startActivity(new Intent(TelaPrincipalActivity.this, TelaAnaliseCadastro.class));
-                else
-                    startActivity(new Intent(TelaPrincipalActivity.this, TelaDoacaoActivity.class));
+                startActivity(new Intent(TelaPrincipalActivity.this, TelaDoacaoActivity.class));
             }
         });
         EntidadeController.getInstance().buscaEntidades(this, listaEntidades);
@@ -84,63 +105,35 @@ public class TelaPrincipalActivity extends AppCompatActivity {
             }
         });
 
-        if(ORIGEM == ORIGEM_USUARIO) {
-            listViewRanking = (ListView) findViewById(R.id.listView2);
-            listaDoadores = new ArrayList<>();
-        }
-        else
-            findViewById(R.id.floating).setVisibility(View.GONE);
+        listViewRanking = (ListView) findViewById(R.id.listView2);
+        listaDoadores = new ArrayList<>();
+
+        findViewById(R.id.floating).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listaDoadores = new ArrayList<>();
+                RankingController.getInstance().carregaRanking(TelaPrincipalActivity.this, listaDoadores);
+            }
+        });
     }
 
-    private void inicializaTabHost() {
+    private void inicializaTabHostUsuario() {
         TabHost host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
 
-        String tab1 = null;
-        String tab2 = null;
-        String tab3 = null;
-        int id1 = 0;
-        int id2 = 0;
-        int id3 = 0;
-
-        if(ORIGEM == ORIGEM_USUARIO){
-            tab1 = "Ranking";
-            tab2 = "Entidades";
-            tab3 = "Mapa";
-            id1 = R.id.tab3;
-            id2 = R.id.tab1;
-            id3 = R.id.tab2;
-        }
-        else if(ORIGEM == ORIGEM_ADM){
-            tab1 = "Análise de Cadastros";
-            tab2 = "Pontos de Coleta";
-            tab3 = "Campanhas de Doação";
-            id1 = R.id.tab1;
-            id2 = R.id.tab2;
-            id3 = R.id.tab3;
-        }
-        else{
-            tab1 = "Ranking";
-            tab2 = "Entidades";
-            tab3 = "Mapa";
-            id1 = R.id.tab3;
-            id2 = R.id.tab1;
-            id3 = R.id.tab2;
-        }
-
-        TabHost.TabSpec spec3 = host.newTabSpec(tab1);
-        spec3.setContent(id1);
-        spec3.setIndicator(tab1);
+        TabHost.TabSpec spec3 = host.newTabSpec("Ranking");
+        spec3.setContent(R.id.tab3);
+        spec3.setIndicator("Ranking");
         host.addTab(spec3);
 
-        TabHost.TabSpec spec = host.newTabSpec(tab2);
-        spec.setContent(id2);
-        spec.setIndicator(tab2);
+        TabHost.TabSpec spec = host.newTabSpec( "Entidades");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator("Entidades");
         host.addTab(spec);
 
-        TabHost.TabSpec spec2 = host.newTabSpec(tab3);
-        spec2.setContent(id3);
-        spec2.setIndicator(tab3);
+        TabHost.TabSpec spec2 = host.newTabSpec("Mapa");
+        spec2.setContent(R.id.tab2);
+        spec2.setIndicator("Mapa");
         host.addTab(spec2);
     }
 

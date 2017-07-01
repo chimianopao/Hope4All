@@ -91,7 +91,7 @@ public class UsuarioDB {
                 });
     }
 
-    public void loginAdm(final Activity tela, String email, String senha) {
+    public void loginAdm(final Activity tela, String email, final String senha) {
         databaseReference
                 .child("administradores")
                 .orderByChild("email")
@@ -105,6 +105,11 @@ public class UsuarioDB {
                         }
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            String aux = (String) child.child("senha").getValue();
+                            if(!aux.equals(senha)){
+                                Dialogs.dialogErro(tela, "Senha incorreta!");
+                                return;
+                            }
                             Administrador adm = new Administrador(child);
                             UsuarioController.getInstance().terminouLoginAdm(tela, adm);
                         }

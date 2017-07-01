@@ -78,8 +78,11 @@ public class EntidadeDB {
                                 if(!aprovada)
                                     listaEntidades.add(new Entidade(child));
                             }
-                            else
-                                listaEntidades.add(new Entidade(child));
+                            else if(TelaPrincipalActivity.ORIGEM == TelaPrincipalActivity.ORIGEM_USUARIO) {
+                                boolean aprovada = (boolean) child.child("aprovada").getValue();
+                                if(aprovada)
+                                    listaEntidades.add(new Entidade(child));
+                            }
                         }
                         EntidadeController.getInstance().terminouBusca(tela);
                     }

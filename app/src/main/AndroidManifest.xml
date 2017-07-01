@@ -36,7 +36,9 @@
         <activity
             android:name=".TelaDoacaoActivity"
             android:label="Realizar Doação" />
-        <activity android:name=".TelaAnaliseCadastro"></activity>
+        <activity android:name=".TelaAnaliseCadastro" />
+        <activity android:name=".CadastroPontoColeta" />
+        <activity android:name=".TelaListaEntidadesAnalise"></activity>
     </application>
 
 </manifest>
