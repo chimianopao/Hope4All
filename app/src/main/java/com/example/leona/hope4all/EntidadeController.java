@@ -20,6 +20,7 @@ public class EntidadeController {
     private static EntidadeController instance;
     private Entidade entidade;
     private FirebaseAuth firebaseAuth;
+    private String categoria;
 
     public EntidadeController(){
         firebaseAuth = FirebaseAuth.getInstance();
@@ -75,7 +76,7 @@ public class EntidadeController {
                         }
                         Dialogs.tiraDialogCarregando();
                         TelaPrincipalActivity.ORIGEM = TelaPrincipalActivity.ORIGEM_ENTIDADE;
-                        tela.startActivity(new Intent(tela, TelaPrincipalActivity.class));
+                        tela.startActivity(new Intent(tela, ConfirmarDoacaoActivity.class));
                     }
                 });
     }
@@ -92,5 +93,13 @@ public class EntidadeController {
     public void terminouAprovacao(Activity tela) {
         Dialogs.tiraDialogCarregando();
         tela.finish();
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getCategoria(){
+        return categoria;
     }
 }

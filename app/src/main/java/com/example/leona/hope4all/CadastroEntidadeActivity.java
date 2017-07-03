@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 public class CadastroEntidadeActivity extends AppCompatActivity {
 
@@ -19,6 +23,22 @@ public class CadastroEntidadeActivity extends AppCompatActivity {
     }
 
     private void instanciaComponentes() {
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.layoutChecks);
+        CheckBox check = new CheckBox(this);
+        check.setText("Alimentos");
+        layout.addView(check);
+        check = new CheckBox(this);
+        check.setText("Agasalhos");
+        layout.addView(check);
+        check = new CheckBox(this);
+        check.setText("Livros");
+        layout.addView(check);
+        check = new CheckBox(this);
+        check.setText("Brinquedos");
+        layout.addView(check);
+        check = new CheckBox(this);
+        check.setText("Remédios");
+        layout.addView(check);
         editNome = (EditText) findViewById(R.id.editNome);
         editEndereco = (EditText) findViewById(R.id.editEndereco);
         editLatitude = (EditText) findViewById(R.id.editLatitude);
@@ -50,7 +70,13 @@ public class CadastroEntidadeActivity extends AppCompatActivity {
                 }
                 latitude = Float.parseFloat(editLatitude.getText().toString());
                 longitude = Float.parseFloat(editLongitude.getText().toString());
-                Entidade entidade = new Entidade(nome, endereco, email, senha, telefone, area, latitude, longitude);
+                ArrayList<String> itens = new ArrayList<>();
+                for(int i = 0; i < layout.getChildCount(); i++){
+                    CheckBox check = (CheckBox) layout.getChildAt(i);
+                    if(check.isChecked())
+                        itens.add(check.getText().toString());
+                }
+                Entidade entidade = new Entidade(nome, endereco, email, senha, telefone, area, latitude, longitude, itens);
                 EntidadeDB.getInstance().insereEntidade(entidade, CadastroEntidadeActivity.this);
             }
         });

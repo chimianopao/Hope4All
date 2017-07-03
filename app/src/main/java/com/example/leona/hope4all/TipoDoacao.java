@@ -6,5 +6,5 @@ package com.example.leona.hope4all;
 
 public enum TipoDoacao {
     COLETA,
-    INSTITUICAO
+    ENTREGA
 }

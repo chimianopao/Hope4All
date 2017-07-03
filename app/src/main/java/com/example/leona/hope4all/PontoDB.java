@@ -2,9 +2,13 @@ package com.example.leona.hope4all;
 
 import android.app.Activity;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * Created by leona on 30/06/2017.
@@ -33,5 +37,30 @@ public class PontoDB {
                 PontoController.getInstance().terminouInserir(tela, ponto);
             }
         });
+    }
+
+    public void getPontos(final Activity tela, final ArrayList<PontoEntrega> lista) {
+        databaseReference
+                .child("pontoscoleta")
+                .orderByChild("nome")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot == null){
+                            Dialogs.tiraDialogCarregando();
+                            return;
+                        }
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            lista.add(new PontoColeta(child));
+                        }
+                        PontoController.getInstance().terminouBusca(tela);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

@@ -56,7 +56,7 @@ public class CadastroPontoColeta extends AppCompatActivity {
                 horariode = txtHorarioDe.getText().toString();
                 horarioate = txtHorarioAte.getText().toString();
                 if(horariode.indexOf(':') < 0 || horarioate.indexOf(':') < 0){
-                    Dialogs.dialogErro(CadastroPontoColeta.this, "Coloca o horário direito");
+                    Dialogs.dialogErro(CadastroPontoColeta.this, "Preencha com horários válidos!");
                     return;
                 }
                 ArrayList<String> itens = new ArrayList<>();

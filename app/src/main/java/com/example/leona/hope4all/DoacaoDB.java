@@ -1,7 +1,10 @@
 package com.example.leona.hope4all;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,8 +62,9 @@ public class DoacaoDB {
 
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
                                 String dataString = (String) child.child("data").getValue();
+                                String status = (String) child.child("status").getValue();
                                 DateTime data = DateTime.parse(dataString, DateTimeFormat.forPattern("dd-MM-YYYY HH:mm"));
-                                if(data.getMonthOfYear() == DateTime.now().getMonthOfYear()){
+                                if(data.getMonthOfYear() == DateTime.now().getMonthOfYear() && status.equals("Completada com sucesso")){
                                     user.setPontos(user.getPontos() + 1);
                                 }
                             }
@@ -83,5 +87,37 @@ public class DoacaoDB {
                         }
                     });
         }
+    }
+
+    public void confirmaDoacao(final Activity tela, final String identificador) {
+        databaseReference
+                .child("doacoes")
+                .child(identificador)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() == null){
+                            Dialogs.tiraDialogCarregando();
+                            Dialogs.dialogErro(tela, "Este identificador não existe!");
+                            return;
+                        }
+
+                        databaseReference
+                                .child("doacoes")
+                                .child(identificador)
+                                .child("status")
+                                .setValue("Completada com sucesso")
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        DoacaoController.getInstance().terminouConfirmacao(tela);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 }

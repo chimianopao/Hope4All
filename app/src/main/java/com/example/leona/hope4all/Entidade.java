@@ -2,17 +2,21 @@ package com.example.leona.hope4all;
 
 import com.google.firebase.database.DataSnapshot;
 
+import java.util.ArrayList;
+
 /**
  * Created by leona on 27/05/2017.
  */
 
-public class Entidade {
+public class Entidade extends PontoEntrega{
 
-    private String nome; private String endereco; private String email; private String senha; private String area; private long telefone;
+    private String nome, endereco, email, senha, area;
+    private long telefone;
     private double longitude, latitude;
     private boolean aprovada = false;
+    private ArrayList<String> itensAceitos;
 
-    public Entidade(String nome, String endereco, String email, String senha, long telefone, String area, float latitude, float longitude) {
+    public Entidade(String nome, String endereco, String email, String senha, long telefone, String area, float latitude, float longitude, ArrayList<String> itensAceitos) {
         this.nome = nome;
         this.endereco = endereco;
         this.email = email;
@@ -21,6 +25,7 @@ public class Entidade {
         this.longitude = longitude;
         this.area = area;
         this.telefone = telefone;
+        this.itensAceitos = itensAceitos;
     }
 
     public Entidade(DataSnapshot snapshot){
@@ -39,9 +44,21 @@ public class Entidade {
         longitude = Double.parseDouble(longString);
         area = (String) snapshot.child("area").getValue();
         telefone = (long) snapshot.child("telefone").getValue();
+        itensAceitos = new ArrayList<>();
+        for(DataSnapshot child : snapshot.child("itensAceitos").getChildren()){
+            itensAceitos.add((String)child.getValue());
+        }
     }
 
     public Entidade(){}
+
+    public ArrayList<String> getItensAceitos() {
+        return itensAceitos;
+    }
+
+    public void setItensAceitos(ArrayList<String> itensAceitos) {
+        this.itensAceitos = itensAceitos;
+    }
 
     public long getTelefone() {
         return telefone;
@@ -113,5 +130,9 @@ public class Entidade {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public String toString(){
+        return super.toString();
     }
 }

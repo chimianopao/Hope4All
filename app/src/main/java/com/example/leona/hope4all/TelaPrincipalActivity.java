@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -29,7 +29,6 @@ public class TelaPrincipalActivity extends AppCompatActivity {
     private ArrayList<Usuario> listaDoadores;
     private SearchView searchBar;
     private ListView listView, listViewRanking;
-    private ArrayList<CheckBox> listaCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +71,14 @@ public class TelaPrincipalActivity extends AppCompatActivity {
     }
 
     private void inicializaListasUsuario() {
+        final Spinner spinner = (Spinner) findViewById(R.id.spinnerItens);
         listaEntidades = new ArrayList<>();
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 EntidadeController.getInstance().setEntidade(listaEntidades.get(position));
+                EntidadeController.getInstance().setCategoria((String)spinner.getSelectedItem());
                 startActivity(new Intent(TelaPrincipalActivity.this, TelaDoacaoActivity.class));
             }
         });
@@ -102,6 +103,24 @@ public class TelaPrincipalActivity extends AppCompatActivity {
                 }
                 listView.setAdapter(new EntidadeAdapter(TelaPrincipalActivity.this,res));
                 return true;
+            }
+        });
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ArrayList<Entidade> res = new ArrayList<>();
+                String item = (String) spinner.getSelectedItem();
+                for(Entidade ent : listaEntidades){
+                    if(ent.getItensAceitos().contains(item)){
+                        res.add(ent);
+                    }
+                }
+                listView.setAdapter(new EntidadeAdapter(TelaPrincipalActivity.this,res));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 

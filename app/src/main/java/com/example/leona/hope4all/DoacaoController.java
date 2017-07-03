@@ -38,4 +38,22 @@ public class DoacaoController {
                 })
                 .show();
     }
+
+    public void confirmarDoacao(Activity tela, String identificador) {
+        Dialogs.dialogCarregando(tela);
+        DoacaoDB.getInstance().confirmaDoacao(tela, identificador);
+    }
+
+    public void terminouConfirmacao(Activity tela) {
+        Dialogs.tiraDialogCarregando();
+        new AlertDialog.Builder(tela)
+                .setTitle("Aviso")
+                .setMessage("Doação confirmada com sucesso!")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
+    }
 }
